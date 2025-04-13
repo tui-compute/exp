@@ -1,0 +1,12 @@
+{
+  "name": "exp",
+  "description": "A modular, configurable hardware accelerator platform",
+  "version": "0.1.0",
+  "tool_versions": {
+    "vivado": "2024.2",
+    "verilator": "5.016",
+    "python": "3.10"
+  },
+  "targets": ["kcu116", "vcu128", "zcu104"],
+  "default_config": "dct"
+}

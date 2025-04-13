@@ -1,0 +1,49 @@
+# Verilator / Questa / Vivado Simulation
+sim/results/
+sim/**/obj_dir/
+*.vcd
+*.log
+*.wlf
+*.vvp
+*.vpd
+*.vcd
+
+# Vivado/FPGA
+*.jou
+*.pb
+*.str
+*.d
+*.o
+*.bit
+*.bin
+*.xpr
+*.runs/
+*.cache/
+*.webtalk/
+*.hw/
+*.sdk/
+vivado*.*
+
+# Auto-generated HDL
+hls/out/
+rtl/top/generated_top.sv
+*.svh
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+.env
+
+# Editor/OS Junk
+.DS_Store
+*.swp
+*.bak
+*.tmp
+Thumbs.db
+
+# Ignore local test configs or override files
+local_config.json
+
