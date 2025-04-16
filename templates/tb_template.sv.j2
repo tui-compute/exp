@@ -1,0 +1,112 @@
+// ============================================================
+// {{ testbench_name }}.sv - Auto-generated testbench
+// ============================================================
+`timescale 1ns/1ps
+
+module {{ name }};
+  
+  parameter NUM_PES     = {{ num_pes }};
+  parameter DATA_WIDTH  = {{ data_width }};
+  parameter DEPTH       = {{ buffer_depth }};
+  parameter STRIDE      = {{ stride }};
+  parameter LATENCY     = {{ pe_latency }};
+
+  parameter NUM_CYCLES  = {{ num_cycles }};
+
+  logic clk;
+  logic rst;
+
+  basic_stream_if #(.DATA_WIDTH(DATA_WIDTH)) input_stream();
+  basic_stream_if #(.DATA_WIDTH(DATA_WIDTH)) output_stream();
+
+  // DUT
+  top #(
+    .NUM_PES(NUM_PES),
+    .DATA_WIDTH(DATA_WIDTH),
+    .DEPTH(DEPTH),
+    .STRIDE(STRIDE),
+    .LATENCY(LATENCY)
+  ) dut (
+    .clk(clk),
+    .rst(rst),
+    .input_stream_if(input_stream),
+    .output_stream_if(output_stream)
+  );
+
+  typedef struct packed {
+      int cycle;
+      logic [31:0] expected;
+  } {{ struct_type }};
+
+  {{ struct_type }} {{ struct_name }} [{{ struct_values | length }}] = '{
+      {% for item in struct_values %}
+      '{ cycle: {{ item.cycle }}, expected: {{ item.expected }} }{{ "," if not loop.last }}
+      {% endfor %}
+  };
+
+  logic [31:0] {{ array_name }} [{{ array_values | length }}] = '{
+      {% for val in array_values %}
+      {{ val }}{{ "," if not loop.last }}
+      {% endfor %}
+  };
+
+  // Clock generation
+  always #5 clk = ~clk;
+
+  // Test driver
+  initial begin
+    $display("[TB] Starting {{ testbench_name }}");
+    clk = 0;
+    rst = 1;
+    input_stream.valid = 0;
+    input_stream.data  = '0;
+    output_stream.ready = 1;
+
+    #10 rst = 0;
+
+    fork
+      inject_inputs();
+      check_outputs();
+    join
+
+    $display("[TB] Finished.");
+    $finish;
+  end
+
+  // Task to inject predefined input values
+  task inject_inputs();
+    automatic int i;
+    begin
+      for (i = 0; i < {{ array_values | length }}; i++) begin
+        @(posedge clk);
+        input_stream.valid = 1;
+        input_stream.data  = {{ array_name }}[i];
+        @(posedge clk);
+        input_stream.valid = 0;
+      end
+    end
+  endtask
+
+  // Task to check output at specific cycles
+  task check_outputs();
+    automatic int cycle = 0;
+    automatic int index = 0;
+    begin
+      while (cycle < NUM_CYCLES) begin
+        @(posedge clk);
+        if (index <  {{ struct_values | length }}) begin
+          if ({{ struct_name }}[index].cycle == cycle) begin
+            if (output_stream.data === {{ struct_name }}[index].expected) begin
+              $display("[TB] [Cycle %0d] Output OK: %0h", cycle, output_stream.data);
+            end else begin
+              $fatal("[TB] [Cycle %0d] Mismatch: got %0h, expected %0h", cycle, output_stream.data, {{ struct_name }}[index].expected);
+            end
+            index++;
+          end
+        end
+        cycle++;
+      end
+    end
+  endtask
+
+endmodule

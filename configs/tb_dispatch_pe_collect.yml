@@ -1,0 +1,74 @@
+name: tb_top
+
+data_width:   32
+num_pes:      4
+buffer_depth: 64
+stride:       8
+pe_latency:   5
+
+num_cycles:   1000
+
+array_name: input_array
+array_values:
+  - 32'h00000001
+  - 32'h00000002
+  - 32'h00000003
+  - 32'h00000004
+  - 32'h00000005
+  - 32'h00000006
+  - 32'h00000007
+  - 32'h00000008
+  - 32'h00000009
+  - 32'h0000000a
+  - 32'h0000000b
+  - 32'h0000000c
+  - 32'h0000000d
+  - 32'h0000000e
+  - 32'h0000000f
+  - 32'h00000010
+  - 32'h00000011
+  - 32'h00000012
+  - 32'h00000013
+
+struct_type:  expected_t
+struct_name:  expected_array
+
+struct_values:
+  - cycle: 10
+    expected: 32'h00000007
+  - cycle: 12
+    expected: 32'h00000008
+  - cycle: 14
+    expected: 32'h00000009
+  - cycle: 16
+    expected: 32'h0000000a
+  - cycle: 18
+    expected: 32'h0000000b
+  - cycle: 20
+    expected: 32'h0000000c
+  - cycle: 22
+    expected: 32'h0000000d
+  - cycle: 24
+    expected: 32'h0000000e
+  - cycle: 26
+    expected: 32'h0000000f
+  - cycle: 28
+    expected: 32'h00000010
+  - cycle: 30
+    expected: 32'h00000011
+  - cycle: 32
+    expected: 32'h00000012
+  - cycle: 34
+    expected: 32'h00000013
+  - cycle: 36
+    expected: 32'h00000014
+  - cycle: 38
+    expected: 32'h00000015
+  - cycle: 40
+    expected: 32'h00000016
+  - cycle: 42
+    expected: 32'h00000017
+  - cycle: 44
+    expected: 32'h00000018
+
+

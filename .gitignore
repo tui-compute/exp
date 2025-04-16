@@ -22,6 +22,7 @@ sim/**/obj_dir/
 *.webtalk/
 *.hw/
 *.sdk/
+*.rpt
 vivado*.*
 
 # Auto-generated HDL
@@ -43,6 +44,12 @@ __pycache__/
 *.bak
 *.tmp
 Thumbs.db
+
+#Other
+modelsim.ini
+transcript
+tb_top.sv
+top.sv
 
 # Ignore local test configs or override files
 local_config.json

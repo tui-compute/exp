@@ -2,7 +2,7 @@
 
 ## Project Overview
 **Name:** EXP — EXtensions Platform  
-**Purpose:** Modular hardware accelerator platform with configurable processing elements, scratchpad memory, and control fabric.
+**Purpose:** Modular hardware accelerator platform with configurable processing elements, dispatcher memory, and control fabric.
 
 ---
 
@@ -12,10 +12,10 @@
 - [x] Makefile for orchestration
 - [x] Python 3 for generation scripts
 - [x] Jinja2 for RTL/code templating
-- [x] JSON for architecture/config definition
+- [x] YAML for architecture/config definition
 
 ### 📂 Directory Structure (Minimal & Scalable)
-- `rtl/` — core RTL (PEs, scratchpad, interfaces, top)
+- `rtl/` — core RTL (PEs, dispatcher, interfaces, top)
 - `hls/` — HLS components and scripts
 - `sim/` — simulation testbenches and configurations
 - `fpga/` — board-specific constraints and builds
@@ -46,7 +46,7 @@
 ### 📄 Documentation
 - `README.md`
 - `foundation.md` (this file)
-- `scratchpad.md`, `interfaces.md`, etc. (optional detailed specs)
+- `dispatcher.md`, `interfaces.md`, etc. (optional detailed specs)
 
 ---
 
@@ -60,7 +60,7 @@ make vivado_sim
 ---
 
 ## 🧩 Config + Template Flow
-- Define system variant in `configs/*.json`
+- Define system variant in `configs/*.yml`
 - Generate `generated_top.sv` using Jinja2 via `gen_top.py`
 - Build RTL simulation using generated source
 

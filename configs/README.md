@@ -1,1 +1,1 @@
-Configuration files (JSON) for platform variants.
+Configuration files (YAML) for platform variants.

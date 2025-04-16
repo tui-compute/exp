@@ -1,0 +1,6 @@
+name:         top
+data_width:   32
+num_pes:      4
+buffer_depth: 64
+stride:       8
+pe_latency:   3

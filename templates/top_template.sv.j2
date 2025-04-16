@@ -1,0 +1,64 @@
+// ============================================================
+// generated top.sv - Auto-generated top module
+// ============================================================
+
+module {{ name }} #(
+  parameter NUM_PES     = {{ num_pes }},
+  parameter DATA_WIDTH  = {{ data_width }},
+  parameter DEPTH       = {{ buffer_depth }},
+  parameter STRIDE      = {{ stride }},
+  parameter LATENCY     = {{ pe_latency }}
+) (
+  input  logic clk,
+  input  logic rst,
+
+  // Interfaces
+  basic_stream_if.sink      input_stream_if,
+  basic_stream_if.source    output_stream_if
+);
+
+  basic_stream_if #(.DATA_WIDTH(DATA_WIDTH) ) dispatch_out_if [NUM_PES]();
+  basic_stream_if #(.DATA_WIDTH(DATA_WIDTH) ) collect_in_if  [NUM_PES]();
+
+  // Dispatcher
+  dispatcher #(
+    .NUM_BANKS(NUM_PES),
+    .DATA_WIDTH(DATA_WIDTH),
+    .DEPTH(DEPTH),
+    .STRIDE(STRIDE)
+  ) u_dispatcher (
+    .clk(clk),
+    .rst(rst),
+    .write_stream(input_stream_if),
+    .read_stream(dispatch_out_if)
+  );
+
+  // Dummy PEs (one per bank)
+  generate
+    for (genvar i = 0; i < NUM_PES; i++) begin : pe_bank
+      simple_fixed_latency_pe #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .LATENCY(LATENCY)
+      ) u_simple_fixed_latency_pe (
+        .clk(clk),
+        .rst(rst),
+        .in_stream(dispatch_out_if[i]),
+        .out_stream(collect_in_if[i])
+      );
+    end
+  endgenerate
+
+  // Collector
+  collector #(
+    .NUM_BANKS(NUM_PES),
+    .DATA_WIDTH(DATA_WIDTH),
+    .DEPTH(DEPTH),
+    .STRIDE(STRIDE)
+  ) u_collector (
+    .clk(clk),
+    .rst(rst),
+    .in_streams(collect_in_if),
+    .out_stream(output_stream_if)
+  );
+
+endmodule
