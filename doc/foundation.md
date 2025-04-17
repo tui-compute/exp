@@ -20,7 +20,7 @@
 - `sim/` — simulation testbenches and configurations
 - `fpga/` — board-specific constraints and builds
 - `scripts/` — build, code generation, automation helpers
-- `configs/` — JSON files defining platform variants
+- `configs/` — YAML files defining platform variants
 - `templates/` — Jinja2 templates for auto-generated code
 - `external/` — external IP blocks or submodules
 - `doc/` — documentation, specs, diagrams
@@ -31,11 +31,11 @@
 - [x] Vivado simulator support
 - [ ] Self-checking testbenches (WIP)
 - [x] Configurable testbenches using `CONFIG=...`
-- [ ] Organized waveform/log output under `sim/results/<config>`
+- [x] Organized waveform/log output under `sim/results/`
 
 ### 🛠️ Tooling
 - Python 3.10+
-- Vivado 2023.2
+- Vivado 2024.2
 - Verilator 5.x
 - Optional: svlint, verible, GitHub Actions CI
 
@@ -52,17 +52,19 @@
 
 ## 🔧 Build Example
 ```sh
-make verilator CONFIG=mac_array_4x4
-make questa CONFIG=alu_grid_2x2
+make questa CONFIG=your_cutom_config
 make vivado_sim
+make verilator CONFIG=your_other_cutom_config
+make vivado_synth
 ```
 
 ---
 
 ## 🧩 Config + Template Flow
 - Define system variant in `configs/*.yml`
-- Generate `generated_top.sv` using Jinja2 via `gen_top.py`
-- Build RTL simulation using generated source
+- Generate `top.sv` using Jinja2 via `gen_top.py`
+- Generate `tb_top.sv` using Jinja2 via `gen_tb.py`
+- Build RTL simulation using generated sources
 
 ---
 
