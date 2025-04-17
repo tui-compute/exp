@@ -1,0 +1,3 @@
+[submodule "external/core-v-xif"]
+	path = external/core-v-xif
+	url = https://github.com/openhwgroup/core-v-xif
